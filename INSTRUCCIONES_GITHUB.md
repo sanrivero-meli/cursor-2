@@ -19,10 +19,7 @@
 Copia y pega estos comandos en tu terminal (ya estamos en el directorio correcto):
 
 ```bash
-# Agregar el repositorio remoto (reemplaza 'tu-usuario' con tu username de GitHub)
-git remote add origin https://github.com/tu-usuario/adelanto-dinero-prototipos.git
-
-# Verificar que se agregó correctamente
+# El repositorio remoto YA ESTÁ CONFIGURADO con tu usuario
 git remote -v
 
 # Subir los archivos al repositorio
@@ -44,7 +41,7 @@ git push -u origin main
 Después de unos minutos (puede tomar 5-10 minutos), tu página estará disponible en:
 
 ```
-https://tu-usuario.github.io/adelanto-dinero-prototipos/
+https://sanrivero-meli.github.io/adelanto-dinero-prototipos/
 ```
 
 La página principal será `index_prototipos.html` que enlaza a todos los prototipos.
@@ -88,11 +85,11 @@ Una vez completado, tendrás:
 - **Documentación completa** visible en GitHub
 
 ### URLs que funcionarán:
-- Página principal: `https://tu-usuario.github.io/adelanto-dinero-prototipos/`
-- Concepto 1: `https://tu-usuario.github.io/adelanto-dinero-prototipos/concepto1_asistente_ia.html`
-- Concepto 2: `https://tu-usuario.github.io/adelanto-dinero-prototipos/concepto2_escenarios.html`
-- Concepto 3: `https://tu-usuario.github.io/adelanto-dinero-prototipos/concepto3_comunidad.html`
-- Concepto 4: `https://tu-usuario.github.io/adelanto-dinero-prototipos/concepto4_planificador.html`
+- Página principal: `https://sanrivero-meli.github.io/adelanto-dinero-prototipos/`
+- Concepto 1: `https://sanrivero-meli.github.io/adelanto-dinero-prototipos/concepto1_asistente_ia.html`
+- Concepto 2: `https://sanrivero-meli.github.io/adelanto-dinero-prototipos/concepto2_escenarios.html`
+- Concepto 3: `https://sanrivero-meli.github.io/adelanto-dinero-prototipos/concepto3_comunidad.html`
+- Concepto 4: `https://sanrivero-meli.github.io/adelanto-dinero-prototipos/concepto4_planificador.html`
 
 ---
 
