@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LANA - Asistente Financiero Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #020617;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #334155;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .logo-text p {
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #334155;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+            text-decoration: none;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(14, 165, 233, 0.2);
+            color: #38bdf8;
+        }
+        
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-bottom: 80px;
+            margin-top: 20px;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .gradient-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+        
+        /* Chat Screen */
+        .chat-messages {
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+        }
+        
+        .message.assistant {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+        }
+        
+        .message.assistant .message-bubble {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message.user .message-bubble {
+            background: #0284c7;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .quick-action {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .quick-action:hover {
+            background: rgba(14, 165, 233, 0.1);
+            border-color: rgba(14, 165, 233, 0.5);
+        }
+        
+        .quick-action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .quick-action-text {
+            font-size: 13px;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .chat-input:focus {
+            border-color: #0ea5e9;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #0284c7;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0369a1;
+        }
+        
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+        
+        /* Simulator */
+        .slider-group {
+            margin-bottom: 32px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .slider-label {
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+        
+        .slider-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .result-card {
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid #334155;
+        }
+        
+        .result-card.highlight {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2));
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+        
+        .result-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        /* Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #334155;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-change {
+            font-size: 11px;
+            color: #10b981;
+        }
+        
+        .stat-change.negative {
+            color: #ef4444;
+        }
+        
+        /* Goals */
+        .goal-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .goal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .goal-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(2, 6, 23, 0.5);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .goal-progress {
+            margin: 20px 0;
+        }
+        
+        .progress-bar-container {
+            height: 12px;
+            background: #0f172a;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #0284c7);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 8px;
+        }
+        
+        h2 {
+            font-size: 24px;
+        }
+        
+        h3 {
+            font-size: 18px;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid, .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">✨</div>
+                <div class="logo-text">
+                    <h1>LANA</h1>
+                    <p>Tu asistente financiero</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div style="text-align: right; margin-right: 8px;">
+                    <div style="font-size: 14px; font-weight: 500;">María</div>
+                    <div style="font-size: 11px; color: #38bdf8;">Nivel 5</div>
+                </div>
+                <div class="user-avatar">M</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Chat Screen -->
+        <div id="chat-screen" class="screen active">
+            <h2>Chat Conversacional</h2>
+            <p class="subtitle">Interactúa con tu asistente financiero inteligente</p>
+            
+            <div class="card">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message assistant">
+                        <div class="message-bubble">
+                            <p>¡Hola María! 👋 Soy LANA, tu asistente financiero inteligente. ¿En qué puedo ayudarte hoy?</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-action" onclick="handleQuickAction('credit')">
+                        <div class="quick-action-icon">💳</div>
+                        <div class="quick-action-text">Solicitar crédito</div>
+                    </div>
+                    <div class="quick-action" onclick="handleQuickAction('status')">
+                        <div class="quick-action-icon">📊</div>
+                        <div class="quick-action-text">Ver mi situación</div>
+                    </div>
+                    <div class="quick-action" onclick="handleQuickAction('goal')">
+                        <div class="quick-action-icon">🎯</div>
+                        <div class="quick-action-text">Crear objetivo</div>
+                    </div>
+                    <div class="quick-action" onclick="handleQuickAction('send')">
+                        <div class="quick-action-icon">💸</div>
+                        <div class="quick-action-text">Enviar dinero</div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <button class="btn btn-icon btn-primary" onclick="toggleVoice()">
+                        <span id="voice-icon">🎤</span>
+                    </button>
+                    <input type="text" class="chat-input" id="chat-input" placeholder="Escribe tu mensaje...">
+                    <button class="btn btn-icon btn-primary" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulator Screen -->
+        <div id="simulator-screen" class="screen">
+            <h2>Simulador de Crédito</h2>
+            <p class="subtitle">Calcula tu cuota mensual personalizada</p>
+            
+            <div class="card gradient-card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 4px;">Tu Score Crediticio</div>
+                        <div style="font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">750</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 4px;">Monto máximo</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #38bdf8;">$100,000</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-size: 13px;">
+                    <span>✓</span>
+                    <span>¡Tienes acceso a tasas preferenciales!</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-label">Monto del crédito</span>
+                        <span class="slider-value">$<span id="amount-value">10000</span></span>
+                    </div>
+                    <input type="range" id="amount-slider" min="1000" max="100000" step="1000" value="10000" oninput="updateCalculation()">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 8px;">
+                        <span>$1,000</span>
+                        <span>$100,000</span>
+                    </div>
+                </div>
+                
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span class="slider-label">Plazo</span>
+                        <span class="slider-value"><span id="term-value">12</span> meses</span>
+                    </div>
+                    <input type="range" id="term-slider" min="3" max="36" step="3" value="12" oninput="updateCalculation()">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-top: 8px;">
+                        <span>3 meses</span>
+                        <span>36 meses</span>
+                    </div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="result-card highlight">
+                        <div class="result-label">💵 Cuota mensual</div>
+                        <div class="result-value">$<span id="monthly-payment">917</span></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">📊 Tasa de interés</div>
+                        <div class="result-value"><span id="interest-rate">15</span>%</div>
+                        <div style="font-size: 11px; color: #10b981; margin-top: 4px;">Tasa preferente</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">📈 Total a pagar</div>
+                        <div class="result-value">$<span id="total-amount">11004</span></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">📅 Intereses</div>
+                        <div class="result-value">$<span id="total-interest">1004</span></div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-top: 24px; padding: 16px;">
+                    ✓ Solicitar este crédito
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="screen">
+            <h2>Dashboard Financiero</h2>
+            <p class="subtitle">Tu situación financiera en tiempo real</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Balance</span>
+                        <span>💰</span>
+                    </div>
+                    <div class="stat-value">$45,300</div>
+                    <div class="stat-change">↗ +12.5% vs mes anterior</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Ingresos</span>
+                        <span>📈</span>
+                    </div>
+                    <div class="stat-value" style="color: #10b981;">$85,000</div>
+                    <div style="font-size: 11px; color: #64748b;">Este mes</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Gastos</span>
+                        <span>📉</span>
+                    </div>
+                    <div class="stat-value" style="color: #ef4444;">$39,700</div>
+                    <div class="stat-change">↘ -15% vs mes anterior</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Ahorros</span>
+                        <span>🐷</span>
+                    </div>
+                    <div class="stat-value">$12,500</div>
+                    <div style="font-size: 11px; color: #38bdf8;">14.7% de ingresos</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>💡 Insights Personalizados</h3>
+                <div style="margin-top: 16px; padding: 16px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; margin-bottom: 12px;">
+                    <div style="font-weight: 500; margin-bottom: 4px;">✓ Buen progreso</div>
+                    <div style="font-size: 13px; color: #cbd5e1;">Gastas 15% menos que el mes pasado</div>
+                </div>
+                <div style="padding: 16px; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; margin-bottom: 12px;">
+                    <div style="font-weight: 500; margin-bottom: 4px;">⚠️ Atención</div>
+                    <div style="font-size: 13px; color: #cbd5e1;">Tienes una cuota de crédito el 15 de octubre</div>
+                </div>
+                <div style="padding: 16px; background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;">
+                    <div style="font-weight: 500; margin-bottom: 4px;">🎯 Objetivo cercano</div>
+                    <div style="font-size: 13px; color: #cbd5e1;">Te faltan $2,500 para tu objetivo "Vacaciones"</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🏆 Logros y Gamificación</h3>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px;">
+                    <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🏆</div>
+                        <div style="font-size: 11px;">Mes perfecto</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🎯</div>
+                        <div style="font-size: 11px;">Primera meta</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(3, 105, 161, 0.2)); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 12px;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🐷</div>
+                        <div style="font-size: 11px;">Ahorrador</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 12px; opacity: 0.5;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">⚡</div>
+                        <div style="font-size: 11px;">Racha 7 días</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goals Screen -->
+        <div id="goals-screen" class="screen">
+            <h2>Mis Objetivos</h2>
+            <p class="subtitle">Crea y gestiona tus metas financieras</p>
+            
+            <div class="card gradient-card">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 4px;">Total ahorrado</div>
+                        <div style="font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #38bdf8, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$352,500</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 4px;">Meta total</div>
+                        <div style="font-size: 24px; font-weight: 700;">$820,000</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 8px;">Progreso general</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #38bdf8;">43%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="goal-card">
+                <div class="goal-header">
+                    <div class="goal-icon">✈️</div>
+                    <div style="flex: 1;">
+                        <h3>Vacaciones en Brasil</h3>
+                        <div style="font-size: 11px; color: #94a3b8;">📅 185 días restantes</div>
+                    </div>
+                </div>
+                <div class="goal-progress">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 13px; color: #94a3b8;">Progreso</span>
+                        <span style="font-size: 13px; font-weight: 700;">68.8%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 68.8%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span style="font-weight: 700;">$82,500</span>
+                        <span style="color: #94a3b8;">$120,000</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div>
+                        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Aporte mensual</div>
+                        <div style="font-size: 18px; font-weight: 700; color: #38bdf8;">$15,000</div>
+                    </div>
+                    <button class="btn btn-primary">+ Aportar</button>
+                </div>
+            </div>
+            
+            <div class="goal-card">
+                <div class="goal-header">
+                    <div class="goal-icon">🏠</div>
+                    <div style="flex: 1;">
+                        <h3>Fondo de emergencia</h3>
+                        <div style="font-size: 11px; color: #94a3b8;">📅 91 días restantes</div>
+                    </div>
+                </div>
+                <div class="goal-progress">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 13px; color: #94a3b8;">Progreso</span>
+                        <span style="font-size: 13px; font-weight: 700;">72.5%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 72.5%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span style="font-weight: 700;">$145,000</span>
+                        <span style="color: #94a3b8;">$200,000</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div>
+                        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Aporte mensual</div>
+                        <div style="font-size: 18px; font-weight: 700; color: #38bdf8;">$20,000</div>
+                    </div>
+                    <button class="btn btn-primary">+ Aportar</button>
+                </div>
+            </div>
+            
+            <div class="card" style="text-align: center; padding: 40px; cursor: pointer; border-style: dashed;" onclick="alert('Funcionalidad: Crear nuevo objetivo')">
+                <div style="font-size: 48px; margin-bottom: 16px;">➕</div>
+                <h3>Crear nuevo objetivo</h3>
+                <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">Define una nueva meta financiera</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav">
+        <div class="nav-content">
+            <a href="#" class="nav-item active" onclick="switchScreen('chat-screen', event)">
+                <span style="font-size: 24px;">💬</span>
+                <span>Chat</span>
+            </a>
+            <a href="#" class="nav-item" onclick="switchScreen('simulator-screen', event)">
+                <span style="font-size: 24px;">🔢</span>
+                <span>Simulador</span>
+            </a>
+            <a href="#" class="nav-item" onclick="switchScreen('dashboard-screen', event)">
+                <span style="font-size: 24px;">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" onclick="switchScreen('goals-screen', event)">
+                <span style="font-size: 24px;">🎯</span>
+                <span>Objetivos</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function switchScreen(screenId, event) {
+            event.preventDefault();
+            
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Chat functionality
+        let isRecording = false;
+        
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chat-messages');
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `<div class="message-bubble"><p>${message}</p></div>`;
+            messagesContainer.appendChild(userMessage);
+            
+            input.value = '';
+            
+            // Simulate assistant response
+            setTimeout(() => {
+                const responses = [
+                    '¡Claro! Te puedo ayudar con eso. Basándome en tu historial, tienes un score de 750 y puedes acceder a créditos de hasta $50,000 con tasas preferentes.',
+                    'Entiendo. Déjame mostrarte algunas opciones personalizadas para ti.',
+                    'Perfecto. He analizado tu situación y tengo algunas recomendaciones que pueden ayudarte.',
+                    'Excelente idea. Te voy a guiar paso a paso para que logres ese objetivo.'
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const assistantMessage = document.createElement('div');
+                assistantMessage.className = 'message assistant';
+                assistantMessage.innerHTML = `<div class="message-bubble"><p>${randomResponse}</p></div>`;
+                messagesContainer.appendChild(assistantMessage);
+                
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function toggleVoice() {
+            isRecording = !isRecording;
+            const icon = document.getElementById('voice-icon');
+            const input = document.getElementById('chat-input');
+            
+            if (isRecording) {
+                icon.textContent = '⏹️';
+                input.placeholder = 'Escuchando...';
+                
+                setTimeout(() => {
+                    isRecording = false;
+                    icon.textContent = '🎤';
+                    input.value = '¿Cuánto dinero tengo disponible para gastar este mes?';
+                    input.placeholder = 'Escribe tu mensaje...';
+                }, 2000);
+            } else {
+                icon.textContent = '🎤';
+                input.placeholder = 'Escribe tu mensaje...';
+            }
+        }
+        
+        function handleQuickAction(action) {
+            const messages = {
+                credit: '¿Cómo puedo solicitar un crédito?',
+                status: 'Muéstrame mi situación financiera',
+                goal: 'Quiero crear un nuevo objetivo de ahorro',
+                send: '¿Cómo envío dinero a otra persona?'
+            };
+            
+            document.getElementById('chat-input').value = messages[action];
+        }
+        
+        // Enter key to send
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Simulator calculations
+        function updateCalculation() {
+            const amount = parseInt(document.getElementById('amount-slider').value);
+            const term = parseInt(document.getElementById('term-slider').value);
+            
+            document.getElementById('amount-value').textContent = amount.toLocaleString();
+            document.getElementById('term-value').textContent = term;
+            
+            // Calculate with 15% annual interest rate (preferential)
+            const annualRate = 0.15;
+            const monthlyRate = annualRate / 12;
+            const monthlyPayment = (amount * monthlyRate * Math.pow(1 + monthlyRate, term)) / 
+                                  (Math.pow(1 + monthlyRate, term) - 1);
+            
+            const totalAmount = monthlyPayment * term;
+            const totalInterest = totalAmount - amount;
+            
+            document.getElementById('monthly-payment').textContent = Math.round(monthlyPayment).toLocaleString();
+            document.getElementById('total-amount').textContent = Math.round(totalAmount).toLocaleString();
+            document.getElementById('total-interest').textContent = Math.round(totalInterest).toLocaleString();
+            document.getElementById('interest-rate').textContent = (annualRate * 100).toFixed(1);
+        }
+        
+        // Initialize
+        updateCalculation();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

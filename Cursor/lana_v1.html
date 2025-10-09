@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LANA v1 — Tarjetas + Bottom Nav (Wireframe)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0B0F14;
+        --surface: #11151B;
+        --surface-2: #151A21;
+        --text: #EDEFF2;
+        --muted: #B8C1CC;
+        --accent: #22D3EE;
+        --danger: #FCA5A5;
+        --radius: 12px;
+        --gap: 12px;
+      }
+
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        font-feature-settings: "calt" 1;
+        line-height: 1.45;
+      }
+
+      a { color: var(--accent); text-decoration: underline; }
+      a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: var(--radius);
+      }
+
+      .container { max-width: 1000px; margin: 0 auto; padding: 16px; }
+      header {
+        position: sticky; top: 0; z-index: 10;
+        background: var(--bg);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .header-bar { display: flex; gap: var(--gap); align-items: center; justify-content: space-between; padding: 12px 16px; }
+      .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+      .chip { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--accent); color: var(--text); background: transparent; font-size: 12px; }
+      .chip.danger { border-color: var(--danger); color: var(--danger); }
+
+      .grid-cards { display: grid; gap: var(--gap); grid-template-columns: repeat(2, 1fr); }
+      @media (min-width: 720px) { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
+      .card { background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); padding: 14px; }
+      .card h3 { margin: 0 0 8px 0; font-size: clamp(14px, 2.5vw, 16px); }
+      .muted { color: var(--muted); font-size: 14px; }
+
+      .btn { border-radius: var(--radius); padding: 10px 12px; border: 1px solid rgba(255,255,255,0.14); background: var(--surface-2); color: var(--text); cursor: pointer; }
+      .btn-ghost { background: var(--surface); border: 1px solid var(--accent); color: var(--text); }
+      .btn-accent { background: var(--accent); color: #0B0F14; border: none; }
+      .btn.inline { padding: 6px 10px; font-size: 13px; }
+
+      .row { display: flex; gap: var(--gap); align-items: center; }
+      .col { display: grid; gap: var(--gap); }
+
+      nav.bottom {
+        position: sticky; bottom: 0; background: var(--bg);
+        border-top: 1px solid rgba(255,255,255,0.08);
+      }
+      .bottom-bar { display: grid; grid-template-columns: repeat(5, 1fr); }
+      .nav-btn { appearance: none; background: transparent; color: var(--text); border: 0; padding: 12px 8px; cursor: pointer; border-radius: 0; }
+      .nav-btn[aria-current="page"] { background: var(--surface); border-top: 2px solid var(--accent); }
+      .nav-btn span { display: block; font-size: 12px; color: var(--muted); }
+
+      /* Sections */
+      main > section { display: none; }
+      main > section.active { display: block; }
+
+      /* Forms */
+      .field { display: grid; gap: 6px; }
+      label { font-size: 13px; color: var(--muted); }
+      input, select, textarea { background: var(--surface); color: var(--text); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--radius); padding: 10px; }
+
+      /* Accordion */
+      .accordion { display: grid; gap: 8px; }
+      .acc-item { border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); background: var(--surface); }
+      .acc-head { width: 100%; text-align: left; background: transparent; border: 0; color: var(--text); padding: 10px 12px; cursor: pointer; }
+      .acc-panel { display: none; padding: 0 12px 12px 12px; color: var(--muted); }
+      .acc-item[aria-expanded="true"] .acc-panel { display: block; }
+
+      /* Calendar */
+      .calendar { display: grid; gap: 8px; }
+      .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+      .day { background: var(--surface); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; }
+      .day.badge { border-color: var(--accent); }
+
+      /* Switch as button for accessibility */
+      .switch { display: inline-flex; align-items: center; gap: 8px; }
+      .switch-btn { border: 1px solid rgba(255,255,255,0.18); background: var(--surface); color: var(--text); padding: 6px 10px; border-radius: 999px; }
+      .switch-btn[aria-checked="true"] { border-color: var(--accent); }
+
+      footer { color: var(--muted); padding: 24px 16px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-bar">
+        <div class="col" style="gap:4px">
+          <strong>Saldo estimado</strong>
+          <div class="row" style="justify-content: space-between;">
+            <div class="row" style="gap:8px"><span class="muted">$</span><span aria-live="polite" id="saldo">25,400</span></div>
+            <div class="chips"><span class="chip" id="rciChip" aria-live="polite">RCI 62 — Estable</span></div>
+          </div>
+        </div>
+        <div class="row" style="gap:8px">
+          <button class="btn-ghost btn inline" id="openKyc" aria-controls="onboarding">KYC</button>
+          <a href="#" class="btn inline" id="goCredito" aria-controls="credito">Crédito</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" id="main">
+      <!-- Home -->
+      <section id="home" class="active" aria-label="Inicio">
+        <div class="grid-cards" style="margin-bottom: 12px;">
+          <div class="card">
+            <h3>Flujo 30/90 días (P50/P90)</h3>
+            <div class="muted">Placeholder gráfico (barras)</div>
+            <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-top:10px;">
+              <div style="height:40px; background:var(--surface-2);"></div>
+              <div style="height:60px; background:var(--surface-2);"></div>
+              <div style="height:30px; background:var(--surface-2);"></div>
+              <div style="height:70px; background:var(--surface-2);"></div>
+              <div style="height:50px; background:var(--surface-2);"></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>RCI actual</h3>
+            <div class="row" style="justify-content: space-between;">
+              <strong style="font-size:20px;">62</strong>
+              <span class="chip">Estable</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Alertas</h3>
+            <div class="col">
+              <div class="row" style="justify-content: space-between;">
+                <span>Cambiar fecha de pago</span>
+                <button class="btn-ghost btn inline">Ver</button>
+              </div>
+              <div class="row" style="justify-content: space-between;">
+                <span>Autopago parcial</span>
+                <button class="btn-ghost btn inline">Configurar</button>
+              </div>
+              <div class="row" style="justify-content: space-between;">
+                <span>Refinanciar</span>
+                <button class="btn-ghost btn inline" id="openCredito">Simular</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chat -->
+      <section id="chat" aria-label="Asistente IA" aria-live="polite">
+        <div class="card">
+          <h3>Asistente</h3>
+          <div class="row" style="gap:6px; margin-bottom:8px;">
+            <button class="btn-ghost btn inline qa" data-action="credito">Simular crédito</button>
+            <button class="btn-ghost btn inline qa" data-action="calendario">Ver calendario</button>
+            <button class="btn-ghost btn inline qa" data-action="gasto">Clasificar gasto</button>
+          </div>
+          <div class="col" id="chatFeed" style="gap:8px; max-height: 40vh; overflow:auto;">
+            <div class="card" style="background:var(--surface-2)">
+              <div class="muted">IA</div>
+              <div>¿En qué te ayudo hoy?</div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <input id="prompt" aria-label="Escribe tu pregunta" placeholder="Escribe tu pregunta…" />
+            <button id="send" class="btn-accent" aria-label="Enviar">Enviar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Calendario -->
+      <section id="calendario" aria-label="Calendario de pagos">
+        <div class="card">
+          <h3>Octubre 2025</h3>
+          <div class="calendar">
+            <div class="cal-grid" id="calGrid" aria-label="Días del mes" role="grid"></div>
+            <div class="card" id="calDetail" style="background:var(--surface-2)">
+              <div class="muted">Detalle del día</div>
+              <div id="calText">Selecciona un día para ver vencimientos.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Metas -->
+      <section id="metas" aria-label="Metas y ahorro">
+        <div class="card">
+          <h3>Metas</h3>
+          <div class="col">
+            <div class="card" style="background:var(--surface-2)">
+              <div class="row" style="justify-content: space-between;">
+                <div>
+                  <strong>Fondo de emergencia</strong>
+                  <div class="muted">$15,000 · 15/12/2025</div>
+                </div>
+                <div class="switch">
+                  <button class="switch-btn" role="switch" aria-checked="false">Aporte quincenal</button>
+                </div>
+              </div>
+              <div class="row" style="justify-content: space-between; margin-top:8px;">
+                <span class="muted">Estado</span>
+                <button class="btn inline" data-action="pausar">Pausar</button>
+              </div>
+            </div>
+            <div class="card" style="background:var(--surface-2)">
+              <div class="row" style="justify-content: space-between;">
+                <div>
+                  <strong>Viaje</strong>
+                  <div class="muted">$8,000 · 30/06/2026</div>
+                </div>
+                <div class="switch">
+                  <button class="switch-btn" role="switch" aria-checked="true">Aporte semanal</button>
+                </div>
+              </div>
+              <div class="row" style="justify-content: space-between; margin-top:8px;">
+                <span class="muted">Estado</span>
+                <button class="btn inline" data-action="reanudar">Reanudar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Más -->
+      <section id="mas" aria-label="Más opciones">
+        <div class="grid-cards">
+          <div class="card">
+            <h3>Crédito inteligente</h3>
+            <div class="muted">Simula monto, plazo y tasa.</div>
+            <button class="btn-ghost btn inline" data-navigate="credito">Abrir</button>
+          </div>
+          <div class="card">
+            <h3>Privacidad</h3>
+            <div class="muted">Revisa o revoca consentimientos.</div>
+            <button class="btn-ghost btn inline" data-navigate="privacidad">Abrir</button>
+          </div>
+          <div class="card">
+            <h3>Onboarding/KYC</h3>
+            <div class="muted">Completa tu verificación.</div>
+            <button class="btn-ghost btn inline" data-navigate="onboarding">Iniciar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Crédito inteligente -->
+      <section id="credito" aria-label="Crédito inteligente">
+        <div class="card">
+          <h3>Simulador de crédito</h3>
+          <div class="grid-cards" style="grid-template-columns: repeat(1,1fr);">
+            <div class="field">
+              <label for="monto">Monto ($)</label>
+              <input id="monto" type="number" value="50000" min="0" step="1000" />
+            </div>
+            <div class="field">
+              <label for="plazo">Plazo (meses)</label>
+              <input id="plazo" type="number" value="24" min="1" step="1" />
+            </div>
+            <div class="field">
+              <label for="tasa">Tasa anual (%)</label>
+              <input id="tasa" type="number" value="28" min="0" step="0.1" />
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px; gap:8px;">
+            <button id="simular" class="btn-accent">Calcular cuota</button>
+            <span class="muted">Placeholder: cálculo simple</span>
+          </div>
+          <div class="card" style="background:var(--surface-2); margin-top:10px;">
+            <div class="row" style="justify-content: space-between;">
+              <div>
+                <div class="muted">Cuota estimada</div>
+                <strong id="cuota">$0</strong>
+              </div>
+              <div class="chips"><span class="chip" id="impacto">Impacto RCI: neutro</span></div>
+            </div>
+          </div>
+
+          <div class="accordion" style="margin-top:10px;">
+            <div class="acc-item" aria-expanded="false">
+              <button class="acc-head" aria-controls="pq1">¿Por qué te recomendamos esto?</button>
+              <div class="acc-panel" id="pq1">
+                <ul>
+                  <li>Ajusta la cuota para mantener buffer ≥ $1,200 (demo).</li>
+                  <li>P50/P90 muestran flujo positivo en 60 días (dummy).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacidad -->
+      <section id="privacidad" aria-label="Privacidad y consentimientos">
+        <div class="card">
+          <h3>Consentimientos</h3>
+          <div class="col">
+            <div class="row" style="justify-content: space-between;">
+              <div>
+                <strong>Uso de datos transaccionales</strong>
+                <div class="muted">Mejora de recomendaciones</div>
+              </div>
+              <button class="switch-btn" role="switch" aria-checked="true">Activo</button>
+            </div>
+            <div class="row" style="justify-content: space-between;">
+              <div>
+                <strong>Notificaciones</strong>
+                <div class="muted">Recordatorios de pago</div>
+              </div>
+              <button class="switch-btn" role="switch" aria-checked="true">Activo</button>
+            </div>
+            <div class="row" style="justify-content: space-between;">
+              <div>
+                <strong>Compartir con aliados</strong>
+                <div class="muted">Optimizar ofertas</div>
+              </div>
+              <button class="switch-btn" role="switch" aria-checked="false">Inactivo</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Onboarding / KYC -->
+      <section id="onboarding" aria-label="Onboarding KYC">
+        <div class="card">
+          <h3>Verificación (3 pasos)</h3>
+          <div class="col" id="steps">
+            <div class="step" data-step="1">
+              <div class="field">
+                <label for="email">Correo</label>
+                <input id="email" type="email" placeholder="tucorreo@ejemplo.com" />
+              </div>
+              <div class="field">
+                <label for="tel">Teléfono</label>
+                <input id="tel" type="tel" placeholder="5512345678" />
+              </div>
+            </div>
+            <div class="step" data-step="2" hidden>
+              <div class="field">
+                <label><input type="checkbox" id="consent" /> Acepto tratamiento de datos (demo)</label>
+              </div>
+            </div>
+            <div class="step" data-step="3" hidden>
+              <div class="muted">Vincula tu cuenta (placeholder)</div>
+              <button class="btn inline">Conectar</button>
+            </div>
+            <div class="step" data-step="4" hidden>
+              <div class="card" style="background:var(--surface-2)">
+                <div class="muted">Resumen</div>
+                <div id="summary">Revisa tus datos.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="justify-content: space-between; margin-top:10px;">
+            <button id="prev" class="btn" disabled>Anterior</button>
+            <button id="next" class="btn-accent">Siguiente</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom" aria-label="Navegación principal">
+      <div class="bottom-bar" role="tablist" aria-orientation="horizontal">
+        <button class="nav-btn" data-target="home" role="tab" aria-selected="true" aria-current="page">Inicio <span>Home</span></button>
+        <button class="nav-btn" data-target="chat" role="tab" aria-selected="false">Chat <span>IA</span></button>
+        <button class="nav-btn" data-target="calendario" role="tab" aria-selected="false">Calendario <span>Pagos</span></button>
+        <button class="nav-btn" data-target="metas" role="tab" aria-selected="false">Metas <span>Ahorro</span></button>
+        <button class="nav-btn" data-target="mas" role="tab" aria-selected="false">Más <span>Opciones</span></button>
+      </div>
+    </nav>
+
+    <footer class="container">
+      <div>Wireframe LANA v1 (demo). Sin datos reales.</div>
+    </footer>
+
+    <script>
+      const sections = Array.from(document.querySelectorAll('main > section'));
+      const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
+      function showSection(id) {
+        sections.forEach(s => s.classList.toggle('active', s.id === id));
+        navButtons.forEach(btn => {
+          const isActive = btn.getAttribute('data-target') === id;
+          btn.setAttribute('aria-selected', String(isActive));
+          if (isActive) btn.setAttribute('aria-current', 'page'); else btn.removeAttribute('aria-current');
+        });
+        // Scroll to top of content
+        document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      navButtons.forEach((btn, idx) => {
+        btn.addEventListener('click', () => showSection(btn.dataset.target));
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') { e.preventDefault(); navButtons[(idx+1)%navButtons.length].focus(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); navButtons[(idx-1+navButtons.length)%navButtons.length].focus(); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+        });
+      });
+
+      // Header quick actions
+      document.getElementById('openKyc').addEventListener('click', (e) => { e.preventDefault(); showSection('onboarding'); });
+      document.getElementById('goCredito').addEventListener('click', (e) => { e.preventDefault(); showSection('credito'); });
+      document.getElementById('openCredito').addEventListener('click', () => showSection('credito'));
+
+      // Más shortcuts
+      document.querySelectorAll('[data-navigate]').forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.navigate)));
+
+      // Accordion
+      document.querySelectorAll('.acc-item').forEach(item => {
+        const head = item.querySelector('.acc-head');
+        head.addEventListener('click', () => item.setAttribute('aria-expanded', item.getAttribute('aria-expanded') !== 'true'));
+      });
+
+      // Switch buttons
+      function toggleSwitch(btn) { btn.setAttribute('aria-checked', btn.getAttribute('aria-checked') !== 'true'); }
+      document.querySelectorAll('[role="switch"]').forEach(sw => sw.addEventListener('click', () => toggleSwitch(sw)));
+
+      // Chat quick actions and send
+      const chatFeed = document.getElementById('chatFeed');
+      function pushMsg(author, text) {
+        const wrap = document.createElement('div');
+        wrap.className = 'card';
+        wrap.style.background = 'var(--surface-2)';
+        wrap.innerHTML = `<div class="muted">${author}</div><div>${text}</div>`;
+        chatFeed.appendChild(wrap); chatFeed.scrollTop = chatFeed.scrollHeight;
+      }
+      document.querySelectorAll('.qa').forEach(btn => btn.addEventListener('click', () => {
+        const a = btn.dataset.action;
+        if (a === 'credito') { pushMsg('Tú', 'Simular crédito'); pushMsg('IA', 'Abrí el simulador en la sección Crédito.'); showSection('credito'); }
+        if (a === 'calendario') { pushMsg('Tú', 'Ver calendario'); pushMsg('IA', 'Mostrando próximos vencimientos.'); showSection('calendario'); }
+        if (a === 'gasto') { pushMsg('Tú', 'Clasificar gasto'); pushMsg('IA', 'Ejemplo: “Supermercado” → Hogar (demo).'); }
+      }))
+      document.getElementById('send').addEventListener('click', () => {
+        const v = document.getElementById('prompt').value.trim(); if (!v) return;
+        pushMsg('Tú', v); pushMsg('IA', 'Respuesta demo con fuentes ficticias.');
+        document.getElementById('prompt').value = '';
+      });
+
+      // Calendar grid (simple)
+      const calGrid = document.getElementById('calGrid');
+      const calText = document.getElementById('calText');
+      const dueDays = new Set([3, 11, 19, 28]);
+      for (let d = 1; d <= 31; d++) {
+        const b = document.createElement('button');
+        b.className = 'day' + (dueDays.has(d) ? ' badge' : '');
+        b.textContent = String(d);
+        b.setAttribute('aria-label', `Día ${d}`);
+        b.addEventListener('click', () => {
+          calText.textContent = dueDays.has(d) ? `Vencimientos el día ${d}: $1,200 (demo).` : `Sin vencimientos el día ${d}.`;
+        });
+        calGrid.appendChild(b);
+      }
+
+      // Crédito — cálculo simple
+      function formatMoney(n) { return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n); }
+      document.getElementById('simular').addEventListener('click', () => {
+        const monto = Number(document.getElementById('monto').value || 0);
+        const plazo = Number(document.getElementById('plazo').value || 1);
+        const tasa = Number(document.getElementById('tasa').value || 0) / 100;
+        // Placeholder: cuota mensual aproximada (simple, no real)
+        const cuota = Math.round((monto * (tasa/12)) + (monto / plazo));
+        document.getElementById('cuota').textContent = formatMoney(cuota);
+        const impacto = document.getElementById('impacto');
+        if (cuota < 3000) impacto.textContent = 'Impacto RCI: positivo';
+        else if (cuota < 6000) impacto.textContent = 'Impacto RCI: neutro';
+        else impacto.textContent = 'Impacto RCI: riesgo';
+      });
+
+      // Onboarding wizard
+      let step = 1;
+      const stepsWrap = document.getElementById('steps');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      function renderStep() {
+        stepsWrap.querySelectorAll('.step').forEach(s => {
+          const is = Number(s.dataset.step) === step; s.hidden = !is;
+        });
+        prevBtn.disabled = step === 1; nextBtn.textContent = step === 4 ? 'Finalizar' : 'Siguiente';
+      }
+      prevBtn.addEventListener('click', () => { if (step > 1) { step--; renderStep(); } });
+      nextBtn.addEventListener('click', () => {
+        if (step === 1) {
+          // minimal validation demo
+          const email = document.getElementById('email').value.trim();
+          const tel = document.getElementById('tel').value.trim();
+          if (!email || !tel) { alert('Completa correo y teléfono (demo)'); return; }
+        }
+        if (step === 2) {
+          if (!document.getElementById('consent').checked) { alert('Acepta el consentimiento (demo)'); return; }
+        }
+        if (step === 3) {
+          document.getElementById('summary').textContent = 'Correo y teléfono verificados. Cuenta conectada (placeholder).';
+        }
+        if (step < 4) { step++; renderStep(); } else { alert('KYC completado (demo)'); showSection('home'); }
+      });
+      renderStep();
+    </script>
+  </body>
+  </html>
+
+

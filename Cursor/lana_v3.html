@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LANA v3 — Tabs + Timeline (Wireframe)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0B0F14;
+        --surface: #11151B;
+        --surface-2: #151A21;
+        --text: #EDEFF2;
+        --muted: #B8C1CC;
+        --accent: #22D3EE;
+        --danger: #FCA5A5;
+        --radius: 12px;
+        --gap: 12px;
+      }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-feature-settings: "calt" 1; line-height: 1.45; }
+      a { color: var(--accent); text-decoration: underline; }
+      a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius); }
+
+      header { position: sticky; top: 0; background: var(--bg); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .container { max-width: 1100px; margin: 0 auto; padding: 12px 16px; }
+      .tabs { display: flex; gap: 8px; overflow: auto; }
+      .tab { background: transparent; color: var(--text); border: 0; padding: 10px 12px; border-radius: 8px; cursor: pointer; }
+      .tab[aria-selected="true"] { background: var(--surface); border: 1px solid rgba(255,255,255,0.12); }
+      main > section { display: none; }
+      main > section.active { display: block; }
+
+      .card { background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); padding: 14px; }
+      .muted { color: var(--muted); font-size: 14px; }
+      .btn { border-radius: var(--radius); padding: 10px 12px; border: 1px solid rgba(255,255,255,0.14); background: var(--surface-2); color: var(--text); cursor: pointer; }
+      .btn-ghost { background: var(--surface); border: 1px solid var(--accent); color: var(--text); }
+      .btn-accent { background: var(--accent); color: #0B0F14; border: none; }
+      input { background: var(--surface); color: var(--text); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--radius); padding: 10px; width: 100%; }
+
+      /* Timeline */
+      .timeline { position: relative; padding-left: 20px; display: grid; gap: 10px; }
+      .timeline::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.12); }
+      .tl-item { position: relative; }
+      .tl-item::before { content: ""; position: absolute; left: -12px; top: 8px; width: 8px; height: 8px; background: var(--accent); border-radius: 999px; }
+
+      .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+      .chip { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--accent); color: var(--text); background: transparent; font-size: 12px; }
+      .acc-item { border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); background: var(--surface); }
+      .acc-head { width: 100%; text-align: left; background: transparent; border: 0; color: var(--text); padding: 10px 12px; cursor: pointer; }
+      .acc-panel { display: none; padding: 0 12px 12px 12px; color: var(--muted); }
+      .acc-item[aria-expanded="true"] .acc-panel { display: block; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav class="tabs" role="tablist" aria-orientation="horizontal">
+          <button class="tab" data-target="home" aria-selected="true" aria-current="page">Home</button>
+          <button class="tab" data-target="chat" aria-selected="false">Chat</button>
+          <button class="tab" data-target="pagos" aria-selected="false">Pagos</button>
+          <button class="tab" data-target="credito" aria-selected="false">Crédito</button>
+          <button class="tab" data-target="metas" aria-selected="false">Metas</button>
+          <button class="tab" data-target="privacidad" aria-selected="false">Privacidad</button>
+          <button class="tab" data-target="onboarding" aria-selected="false">Onboarding</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Home with timeline -->
+      <section id="home" class="active" aria-label="Inicio">
+        <div class="card">
+          <div class="muted">Timeline</div>
+          <div class="timeline" style="margin-top:8px;">
+            <div class="tl-item card" style="background:var(--surface-2)">
+              <strong>Hoy — Sugerencia</strong>
+              <div class="muted">Autopago parcial recomendado</div>
+              <div class="chips" style="margin-top:6px;"><span class="chip">Pausa si buffer &lt; $1,200</span></div>
+              <div class="acc-item" aria-expanded="false" style="margin-top:6px;">
+                <button class="acc-head">¿Por qué?</button>
+                <div class="acc-panel"><ul><li>RCI 62 — Estable</li><li>Flujo 30/90 positivo (dummy)</li></ul></div>
+              </div>
+            </div>
+            <div class="tl-item card" style="background:var(--surface-2)">
+              <strong>11 Oct — Próximo pago</strong>
+              <div class="muted">$1,200</div>
+              <div class="chips" style="margin-top:6px;"><span class="chip">Recordatorio</span></div>
+            </div>
+            <div class="tl-item card" style="background:var(--surface-2)">
+              <strong>28 Oct — Posible refinanciación</strong>
+              <div class="muted">Ajusta monto y plazo</div>
+              <button class="btn-ghost" data-nav="credito" style="margin-top:6px;">Simular crédito</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chat -->
+      <section id="chat" aria-label="Asistente IA">
+        <div class="card">
+          <div class="muted">Acciones</div>
+          <div style="display:flex; gap:8px; margin-top:6px;">
+            <button class="btn-ghost qa" data-action="credito">Simular crédito</button>
+            <button class="btn-ghost qa" data-action="pagos">Ver pagos</button>
+          </div>
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="muted">Chat (demo)</div>
+          <div id="feed" style="margin-top:6px; display:grid; gap:8px; max-height:40vh; overflow:auto;">
+            <div class="card" style="background:var(--surface-2)"><div class="muted">IA</div><div>Hola, ¿qué necesitas?</div></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <input id="in" placeholder="Escribe tu pregunta…" />
+            <button class="btn-accent" id="send">Enviar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pagos (calendario compacto) -->
+      <section id="pagos" aria-label="Pagos">
+        <div class="card">
+          <div class="muted">Octubre 2025</div>
+          <div id="days" style="display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:8px;"></div>
+          <div class="card" style="background:var(--surface-2); margin-top:8px;">
+            <div class="muted">Detalle</div>
+            <div id="dText">Selecciona un día</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Crédito -->
+      <section id="credito" aria-label="Crédito inteligente">
+        <div class="card">
+          <div class="muted">Simulador</div>
+          <div style="display:grid; gap:8px; grid-template-columns: repeat(3, 1fr);">
+            <div><label class="muted" for="monto">Monto</label><input id="monto" type="number" value="50000" /></div>
+            <div><label class="muted" for="plazo">Plazo</label><input id="plazo" type="number" value="24" /></div>
+            <div><label class="muted" for="tasa">Tasa %</label><input id="tasa" type="number" value="28" step="0.1" /></div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px; align-items:center;">
+            <button class="btn-accent" id="calc">Calcular</button><span class="muted">Placeholder</span>
+          </div>
+          <div class="card" style="background:var(--surface-2); margin-top:8px; display:flex; justify-content: space-between;">
+            <div><div class="muted">Cuota</div><strong id="cuota">$0</strong></div>
+            <div class="chips"><span class="chip" id="impacto">Impacto RCI: neutro</span></div>
+          </div>
+          <div class="acc-item" aria-expanded="false" style="margin-top:8px;">
+            <button class="acc-head">¿Por qué?</button>
+            <div class="acc-panel"><ul><li>Buffer ≥ $1,200 (demo)</li><li>Flujo favorable (dummy)</li></ul></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Metas -->
+      <section id="metas" aria-label="Metas">
+        <div class="card">
+          <div class="muted">Metas y ahorro</div>
+          <div class="card" style="background:var(--surface-2); margin-top:8px;">
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+              <div><strong>Fondo de emergencia</strong><div class="muted">$15,000 · 15/12/2025</div></div>
+              <button class="btn-ghost" role="switch" aria-checked="false">Aporte</button>
+            </div>
+          </div>
+          <div class="card" style="background:var(--surface-2); margin-top:8px;">
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+              <div><strong>Viaje</strong><div class="muted">$8,000 · 30/06/2026</div></div>
+              <button class="btn-ghost" role="switch" aria-checked="true">Aporte</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacidad -->
+      <section id="privacidad" aria-label="Privacidad">
+        <div class="card">
+          <div class="muted">Consentimientos</div>
+          <div style="display:grid; gap:8px; margin-top:8px;">
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+              <div><strong>Datos transaccionales</strong><div class="muted">Recomendaciones</div></div>
+              <button class="btn-ghost" role="switch" aria-checked="true">Activo</button>
+            </div>
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+              <div><strong>Notificaciones</strong><div class="muted">Recordatorios</div></div>
+              <button class="btn-ghost" role="switch" aria-checked="true">Activo</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Onboarding -->
+      <section id="onboarding" aria-label="Onboarding KYC">
+        <div class="card">
+          <div class="muted">Verificación (3 pasos)</div>
+          <div id="steps" style="display:grid; gap:8px; margin-top:8px;">
+            <div class="s" data-s="1">
+              <label class="muted" for="email">Correo</label>
+              <input id="email" type="email" placeholder="tucorreo@ejemplo.com" />
+              <label class="muted" for="tel">Teléfono</label>
+              <input id="tel" type="tel" placeholder="5512345678" />
+            </div>
+            <div class="s" data-s="2" hidden>
+              <label><input id="consent" type="checkbox" /> Acepto el tratamiento de datos (demo)</label>
+            </div>
+            <div class="s" data-s="3" hidden>
+              <div class="muted">Vinculación de cuenta (placeholder)</div>
+              <button class="btn">Conectar</button>
+            </div>
+            <div class="s" data-s="4" hidden>
+              <div class="card" style="background:var(--surface-2)"><div class="muted">Resumen</div><div id="sum">Revisa datos</div></div>
+            </div>
+          </div>
+          <div style="display:flex; justify-content: space-between; margin-top:8px;">
+            <button class="btn" id="prev" disabled>Anterior</button>
+            <button class="btn-accent" id="next">Siguiente</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container" style="color:var(--muted); font-size:12px;">Wireframe LANA v3. Sin datos reales.</footer>
+
+    <script>
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const sections = Array.from(document.querySelectorAll('main > section'));
+      function show(id){ sections.forEach(s=>s.classList.toggle('active', s.id===id)); tabs.forEach(t=>{ const on=t.dataset.target===id; t.setAttribute('aria-selected', String(on)); if(on) t.setAttribute('aria-current','page'); else t.removeAttribute('aria-current'); }); window.scrollTo({top:0,behavior:'smooth'}); }
+      tabs.forEach((t,i)=>{ t.addEventListener('click',()=>show(t.dataset.target)); t.addEventListener('keydown',(e)=>{ if(e.key==='ArrowRight'){ e.preventDefault(); tabs[(i+1)%tabs.length].focus(); } if(e.key==='ArrowLeft'){ e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); } if(e.key==='Enter'||e.key===' '){ e.preventDefault(); t.click(); } }); });
+      document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.nav)));
+
+      // Chat
+      const feed = document.getElementById('feed');
+      function push(a,t){ const d=document.createElement('div'); d.className='card'; d.style.background='var(--surface-2)'; d.innerHTML=`<div class="muted">${a}</div><div>${t}</div>`; feed.appendChild(d); feed.scrollTop=feed.scrollHeight; }
+      document.getElementById('send').addEventListener('click',()=>{ const v=document.getElementById('in').value.trim(); if(!v) return; push('Tú',v); push('IA','Respuesta demo.'); document.getElementById('in').value=''; });
+      document.querySelectorAll('.qa').forEach(q=>q.addEventListener('click',()=>{ const a=q.dataset.action; if(a==='credito'){ show('credito'); } if(a==='pagos'){ show('pagos'); } }));
+
+      // Pagos calendario
+      const days = document.getElementById('days'); const dText=document.getElementById('dText'); const due=new Set([3,11,19,28]);
+      for(let i=1;i<=31;i++){ const b=document.createElement('button'); b.textContent=String(i); b.style.padding='10px'; b.style.borderRadius='8px'; b.style.background='var(--surface)'; b.style.color='var(--text)'; b.style.border= due.has(i)?'1px solid var(--accent)':'1px solid rgba(255,255,255,0.1)'; b.addEventListener('click',()=>{ dText.textContent= due.has(i)?`Vencimientos el ${i}: $1,200 (demo).`:`Sin vencimientos el ${i}.`; }); days.appendChild(b); }
+
+      // Crédito
+      function money(n){ return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n); }
+      document.getElementById('calc').addEventListener('click',()=>{
+        const m=Number(document.getElementById('monto').value||0); const p=Number(document.getElementById('plazo').value||1); const t=Number(document.getElementById('tasa').value||0)/100; const c=Math.round((m*(t/12))+(m/p));
+        document.getElementById('cuota').textContent=money(c); const im=document.getElementById('impacto'); im.textContent= c<3000?'Impacto RCI: positivo':(c<6000?'Impacto RCI: neutro':'Impacto RCI: riesgo');
+      });
+      document.querySelectorAll('.acc-item .acc-head').forEach(h=>h.addEventListener('click',()=>{ const it=h.parentElement; it.setAttribute('aria-expanded', it.getAttribute('aria-expanded')!=='true'); }));
+
+      // Switch
+      document.querySelectorAll('[role="switch"]').forEach(sw=>sw.addEventListener('click',()=>{ sw.setAttribute('aria-checked', sw.getAttribute('aria-checked')!=='true'); }));
+
+      // Onboarding
+      let s=1; const prev=document.getElementById('prev'); const next=document.getElementById('next'); const wrap=document.getElementById('steps');
+      function rs(){ wrap.querySelectorAll('.s').forEach(x=>x.hidden=Number(x.dataset.s)!==s); prev.disabled=s===1; next.textContent=s===4?'Finalizar':'Siguiente'; }
+      prev.addEventListener('click',()=>{ if(s>1){ s--; rs(); } });
+      next.addEventListener('click',()=>{
+        if(s===1){ const email=document.getElementById('email').value.trim(); const tel=document.getElementById('tel').value.trim(); if(!email||!tel){ alert('Completa correo y teléfono (demo)'); return; } }
+        if(s===2){ if(!document.getElementById('consent').checked){ alert('Acepta el consentimiento (demo)'); return; } }
+        if(s===3){ document.getElementById('sum').textContent='Correo/teléfono verificados. Cuenta conectada (placeholder).'; }
+        if(s<4){ s++; rs(); } else { alert('KYC completado (demo)'); show('home'); }
+      }); rs();
+    </script>
+  </body>
+  </html>
+
+

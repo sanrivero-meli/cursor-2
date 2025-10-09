@@ -1,0 +1,335 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LANA – Wireframes lo‑fi v1</title>
+  <style>
+    :root {
+      --bg:#f6f7f8;
+      --ink:#111;
+      --ink-2:#444;
+      --ink-3:#777;
+      --line:#cfcfcf;
+      --accent:#000; /* keep grayscale for lo‑fi */
+      --white:#fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--ink); background: var(--bg);
+      display:flex; justify-content:center; align-items:flex-start; padding:24px;
+    }
+    .wrap { width: 375px; } /* iPhone-ish width */
+    .phone {
+      border: 2px solid var(--ink); border-radius: 26px; background: var(--white);
+      overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .status { height: 18px; border-bottom:1px dashed var(--line); background: #fafafa; }
+    .appbar {
+      height: 52px; display:flex; align-items:center; justify-content:space-between;
+      padding: 0 14px; border-bottom:1px solid var(--line);
+    }
+    .appbar .title { font-weight:700; letter-spacing:.2px; }
+    .appbar .sub { font-size:12px; color:var(--ink-3); }
+    .content { height: 680px; overflow:auto; padding: 12px; }
+    .card {
+      border:1px solid var(--ink); border-radius:10px; padding:12px; margin:10px 0; background:#fff;
+      box-shadow: 2px 2px 0 var(--ink); /* lo-fi shadow */
+    }
+    .card.dashed { border-style: dashed; box-shadow:none; }
+    .hstack { display:flex; gap:8px; align-items:center; }
+    .vstack { display:flex; flex-direction:column; gap:8px; }
+    .kpi { display:flex; justify-content:space-between; font-size:14px; }
+    .kpi .v { font-weight:700; }
+    .pill { border:1px dashed var(--ink-3); padding:6px 10px; border-radius:999px; font-size:12px; }
+    .cta { display:block; width:100%; padding:12px; border:2px solid var(--ink); background:#fff; border-radius:10px; font-weight:700; }
+    .cta.primary { background:#fff; }
+    .muted { color:var(--ink-3); font-size:12px; }
+    .list .row { display:flex; justify-content:space-between; padding:10px 2px; border-bottom:1px dashed var(--line); }
+    .list .row:last-child { border-bottom:none; }
+    .hint { font-size:12px; color:var(--ink-2); }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .chip { border:1px dashed var(--ink-2); padding:8px 10px; border-radius:20px; font-size:12px; background:#fafafa; }
+    .bottom {
+      height: 58px; border-top:1px solid var(--ink); display:flex; justify-content:space-around; align-items:center;
+      background:#fff; position:sticky; bottom:0;
+    }
+    .bottom a { text-decoration:none; color:var(--ink-2); font-size:12px; padding:6px 8px; border-radius:8px; border:1px dashed transparent; }
+    .bottom a.active { border-color:var(--ink); color:var(--ink); font-weight:700; }
+    .screen { display:none; }
+    .screen.active { display:block; }
+    .tag { font-size:10px; padding:2px 6px; border:1px dashed var(--ink-3); border-radius:6px; }
+    .progress {
+      width:100%; height:10px; border:1px solid var(--ink); border-radius:999px; overflow:hidden;
+      background: repeating-linear-gradient(45deg,#eee,#eee 6px,#f6f6f6 6px,#f6f6f6 12px);
+    }
+    .bar { height:100%; background:#ddd; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .hdr { font-size:12px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em; }
+    .rowbtns { display:flex; gap:8px; }
+    .small-btn { border:1px solid var(--ink); padding:8px 10px; border-radius:8px; background:#fff; font-size:12px; }
+    .ghost { border-style:dashed; }
+    .note { font-size:11px; color:#555; }
+    .seg { display:flex; border:1px solid var(--ink); border-radius:10px; overflow:hidden; }
+    .seg button { flex:1; background:#fff; border:0; padding:8px; border-right:1px solid var(--ink); font-size:12px; }
+    .seg button:last-child { border-right:0; }
+    .seg .on { background:#f3f3f3; font-weight:700; }
+    .checkbox { display:flex; align-items:center; gap:8px; }
+    .spacer { height:8px; }
+    /* annotations */
+    .anno { font-size:11px; color:#222; background:#fff; border:1px dashed #aaa; padding:6px 8px; border-radius:8px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+    /* link buttons inside cards */
+    .linkbtn { text-decoration:none; border:1px solid var(--ink); padding:8px 10px; border-radius:8px; color:inherit; display:inline-block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="phone">
+      <div class="status"></div>
+      <div class="appbar">
+        <div>
+          <div class="title">LANA</div>
+          <div class="sub">Wireframes lo‑fi v1 (mobile)</div>
+        </div>
+        <div class="pill">Autopiloto: OFF</div>
+      </div>
+      <div id="screens" class="content">
+        
+        <!-- HOME -->
+        <section class="screen" id="home">
+          <div class="card">
+            <div class="kpi"><div>Saldo total</div><div class="v mono">$ 18,420</div></div>
+            <div class="kpi"><div>Flujo 30 días (P50)</div><div class="v mono">$ +2,150</div></div>
+            <div class="spacer"></div>
+            <div class="hdr">Proyección de caja</div>
+            <div class="progress" aria-label="Proyección P50">
+              <div class="bar" style="width:70%"></div>
+            </div>
+            <div class="note">Si compras el vuelo hoy, caes a <span class="mono">–$450</span> el 22 → te propongo 3 opciones.</div>
+            <div class="rowbtns" style="margin-top:8px;">
+              <a class="linkbtn" href="#pagos">Pagar ahora</a>
+              <a class="linkbtn" href="#credito">Refinanciar</a>
+              <a class="linkbtn" href="#chat">Preguntar a LANA</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hdr">Próximos pagos</div>
+            <div class="list">
+              <div class="row"><div><b>Tarjeta Oro</b> <span class="muted">18 Sep</span></div><div class="mono">$ 2,200</div></div>
+              <div class="row"><div><b>Luz</b> <span class="muted">19 Sep</span></div><div class="mono">$ 360</div></div>
+              <div class="row"><div><b>Internet</b> <span class="muted">20 Sep</span></div><div class="mono">$ 499</div></div>
+            </div>
+            <div class="rowbtns">
+              <a class="linkbtn" href="#pagos">Autopay</a>
+              <a class="linkbtn" href="#pagos">Mover fecha</a>
+            </div>
+          </div>
+
+          <div class="card dashed">
+            <div class="hdr">Nudges</div>
+            <div class="chips">
+              <a class="chip" href="#metas">Activa redondeo</a>
+              <a class="chip" href="#metas">Colchón 1 mes</a>
+              <a class="chip" href="#chat">¿Puedo comprar X?</a>
+            </div>
+          </div>
+          <div class="anno">Home: snapshot de salud, proyección de caja, acciones rápidas y pagos.</div>
+        </section>
+
+        <!-- CHAT -->
+        <section class="screen" id="chat">
+          <div class="card">
+            <div class="hdr">Asistente LANA</div>
+            <div class="vstack">
+              <div class="pill">Contexto: RCI 29% • Score alto</div>
+              <div class="card dashed">
+                <div class="muted">LANA (ayer)</div>
+                <div>Con tu flujo proyectado, puedes pagar la tarjeta y llegar a quincena con margen <b>$780</b>. Si compras el vuelo, el 22 quedas en <b>–$450</b>. Te sugiero:
+                  <ol>
+                    <li>Posponer compra 10 días</li>
+                    <li>Refinanciar $6,000 a 5 meses (cuota $1,350)</li>
+                    <li>Ajustar ahorro esta semana</li>
+                  </ol>
+                </div>
+                <div class="rowbtns">
+                  <a class="linkbtn" href="#credito">Refinanciar</a>
+                  <a class="linkbtn" href="#pagos">Ajustar pago</a>
+                </div>
+              </div>
+              <div class="card dashed">
+                <div class="muted">Tú (ahora)</div>
+                <div>¿Me alcanza si pago la tarjeta hoy?</div>
+              </div>
+              <div class="card dashed">
+                <div class="muted">LANA (ahora)</div>
+                <div>Sí, te deja con <b>$1,120</b> hasta el 27. ¿Quieres que programe el pago 48h antes del corte?</div>
+                <div class="rowbtns">
+                  <a class="linkbtn" href="#pagos">Sí, prográmalo</a>
+                  <a class="linkbtn ghost" href="#chat">Ver cálculo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="hdr">Sugerencias</div>
+            <div class="chips">
+              <span class="chip">¿Conviene refinanciar?</span>
+              <span class="chip">Impacto en RCI</span>
+              <span class="chip">Ahorro extra esta semana</span>
+            </div>
+          </div>
+          <div class="anno">Chat: explicabilidad, alternativas y botones de acción.</div>
+        </section>
+
+        <!-- CRÉDITO -->
+        <section class="screen" id="credito">
+          <div class="card">
+            <div class="hdr">Crédito Inteligente</div>
+            <div class="vstack">
+              <div class="kpi"><div>Monto</div><div class="v mono" id="montoVal">$ 7,500</div></div>
+              <input type="range" min="2000" max="30000" step="500" value="7500" id="monto">
+              <div class="kpi"><div>Plazo</div><div class="v mono" id="plazoVal">5 meses</div></div>
+              <input type="range" min="3" max="24" step="1" value="5" id="plazo">
+              <div class="list">
+                <div class="row"><div>TAE estimada</div><div class="mono">31%</div></div>
+                <div class="row"><div>Cuota estimada</div><div class="mono" id="cuotaVal">$ 1,350</div></div>
+                <div class="row"><div>Impacto en RCI</div><div class="mono">+6 pp</div></div>
+              </div>
+              <button class="cta primary">Aceptar oferta</button>
+              <div class="rowbtns">
+                <a class="linkbtn" href="#chat">Preguntar a LANA</a>
+                <a class="linkbtn ghost" href="#credito">Ver detalle (CAT/TAE)</a>
+              </div>
+            </div>
+          </div>
+          <div class="card dashed">
+            <div class="hdr">Explicación</div>
+            <div class="hint">Oferta basada en: flujo P50, RCI actual, buró, ingresos y estabilidad. Sin penalidad por prepago.</div>
+          </div>
+          <div class="anno">Crédito: sliders básicos, cuota estimada, impacto y explicación.</div>
+        </section>
+
+        <!-- PAGOS -->
+        <section class="screen" id="pagos">
+          <div class="card">
+            <div class="hdr">Calendario de pagos</div>
+            <div class="list">
+              <div class="row"><div><b>Tarjeta Oro</b> <span class="muted">18 Sep</span></div><div class="mono">$ 2,200</div></div>
+              <div class="row"><div><b>Luz</b> <span class="muted">19 Sep</span></div><div class="mono">$ 360</div></div>
+              <div class="row"><div><b>Internet</b> <span class="muted">20 Sep</span></div><div class="mono">$ 499</div></div>
+            </div>
+            <div class="seg" style="margin-top:8px;">
+              <button class="on">Avalancha</button>
+              <button>Bola de nieve</button>
+            </div>
+            <div class="checkbox" style="margin-top:8px;">
+              <input type="checkbox" id="auto" checked>
+              <label for="auto">Autopay 48h antes del corte si P50 &gt; 1.2× cuota</label>
+            </div>
+            <div class="rowbtns" style="margin-top:8px;">
+              <a class="linkbtn" href="#pagos">Mover fecha</a>
+              <a class="linkbtn" href="#pagos">Pagar parcial</a>
+              <a class="linkbtn" href="#pagos">Pagar total</a>
+            </div>
+          </div>
+          <div class="card dashed">
+            <div class="hdr">Ahorro en intereses (estimado)</div>
+            <div class="progress"><div class="bar" style="width:42%"></div></div>
+            <div class="hint">Con avalancha vs pago mínimo.</div>
+          </div>
+          <div class="anno">Pagos: lista simple, estrategia, reglas y acciones.</div>
+        </section>
+
+        <!-- METAS -->
+        <section class="screen" id="metas">
+          <div class="card">
+            <div class="hdr">Metas & Hábitos</div>
+            <div class="list">
+              <div class="row">
+                <div>
+                  <b>Colchón de emergencia</b><div class="muted">Meta $15,000 • 60%</div>
+                </div>
+                <div class="mono">$ 9,000</div>
+              </div>
+              <div class="row">
+                <div>
+                  <b>Viaje CDMX</b><div class="muted">Meta $10,000 • 20%</div>
+                </div>
+                <div class="mono">$ 2,000</div>
+              </div>
+            </div>
+            <div class="grid" style="margin-top:8px;">
+              <a class="linkbtn" href="#metas">+ Meta</a>
+              <a class="linkbtn" href="#metas">Redondeo</a>
+            </div>
+            <div class="checkbox" style="margin-top:8px;">
+              <input type="checkbox" id="pausa">
+              <label for="pausa">Pausar aportes si buffer &lt; $1,200</label>
+            </div>
+          </div>
+          <div class="card dashed">
+            <div class="hdr">Nudges</div>
+            <div class="chips">
+              <span class="chip">Aporte quincenal +$150</span>
+              <span class="chip">Eliminar suscripción poco usada</span>
+              <span class="chip">Reto semanal: no delivery</span>
+            </div>
+          </div>
+          <div class="anno">Metas: progreso, reglas simples y nudges contextualizados.</div>
+        </section>
+
+      </div>
+      <div class="bottom">
+        <a href="#home" id="nav-home">Home</a>
+        <a href="#chat" id="nav-chat">Chat</a>
+        <a href="#credito" id="nav-credito">Crédito</a>
+        <a href="#pagos" id="nav-pagos">Pagos</a>
+        <a href="#metas" id="nav-metas">Metas</a>
+      </div>
+    </div>
+    <div style="margin-top:12px;" class="note">
+      <b>Notas:</b> lo‑fi en escala de grises, componentes con bordes punteados para indicar placeholders. 
+      Navega con la barra inferior. Botones llevan a pantallas relacionadas (flujo base).
+    </div>
+  </div>
+  <script>
+    // default screen
+    if(!location.hash) { location.hash = '#home'; }
+    const screens = ['home','chat','credito','pagos','metas'];
+    function setScreen() {
+      const hash = (location.hash || '#home').replace('#','');
+      screens.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.toggle('active', id === hash);
+        const nav = document.getElementById('nav-'+id);
+        if(nav) nav.classList.toggle('active', id === hash);
+      });
+    }
+    window.addEventListener('hashchange', setScreen);
+    window.addEventListener('DOMContentLoaded', setScreen);
+
+    // very simple cuota calculator for demo effect (not precise; lo-fi)
+    const monto = document.getElementById('monto');
+    const plazo = document.getElementById('plazo');
+    const montoVal = document.getElementById('montoVal');
+    const plazoVal = document.getElementById('plazoVal');
+    const cuotaVal = document.getElementById('cuotaVal');
+    function fmt(n){ return '$ ' + Number(n).toLocaleString('es-MX'); }
+    function calc() {
+      const P = Number(monto.value);
+      const n = Number(plazo.value);
+      // APR 31% simple demo → monthly rate approx
+      const r = 0.31/12;
+      const cuota = (P * r) / (1 - Math.pow(1 + r, -n));
+      montoVal.textContent = fmt(P);
+      plazoVal.textContent = n + (n===1?' mes':' meses');
+      cuotaVal.textContent = fmt(Math.round(cuota));
+    }
+    if(monto && plazo){ monto.addEventListener('input', calc); plazo.addEventListener('input', calc); calc(); }
+  </script>
+</body>
+</html>
