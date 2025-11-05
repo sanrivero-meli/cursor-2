@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Layout from './components/Layout'
 import ChatScreen from './screens/ChatScreen'
 import SimulatorScreen from './screens/SimulatorScreen'
+import SimulatorScreenM3 from './screens/SimulatorScreenM3'
+import SimulatorScreenM3Simple from './screens/SimulatorScreenM3Simple'
 import DashboardScreen from './screens/DashboardScreen'
 import GoalsScreen from './screens/GoalsScreen'
 import OnboardingScreen from './screens/OnboardingScreen'
@@ -71,6 +73,8 @@ function App() {
           <Route index element={<Navigate to={onboardingCompleted ? "/chat" : "/onboarding"} replace />} />
           <Route path="chat" element={<ChatScreen user={user} />} />
           <Route path="simulator" element={<SimulatorScreen user={user} />} />
+          <Route path="simulator-m3" element={<SimulatorScreenM3 user={user} />} />
+          <Route path="simulator-m3-simple" element={<SimulatorScreenM3Simple user={user} />} />
           <Route path="dashboard" element={<DashboardScreen user={user} />} />
           <Route path="goals" element={<GoalsScreen user={user} />} />
         </Route>

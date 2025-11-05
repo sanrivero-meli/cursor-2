@@ -22,6 +22,9 @@ export default {
           700: '#388e3c',
           800: '#2e7d32',
           900: '#1b5e20',
+          DEFAULT: '#4caf50',
+          dark: '#388e3c',
+          container: '#c8e6c9',
         },
         // Material 3 Secondary Colors
         secondary: {
@@ -36,13 +39,29 @@ export default {
           800: '#1565c0',
           900: '#0d47a1',
         },
-        // Material 3 Surface Colors
+        // Material 3 Surface Colors (Dark Theme)
         surface: {
-          DEFAULT: '#1e1e1e',
-          variant: '#2c2c2c',
-          container: '#2c2c2c',
-          'container-high': '#363636',
-          'container-highest': '#404040',
+          DEFAULT: '#1c1b1f',
+          variant: '#49454f',
+          container: '#211f26',
+          'container-high': '#2b2930',
+          'container-highest': '#36343b',
+        },
+        // Material 3 On Colors (Text on surfaces)
+        'on-surface': {
+          DEFAULT: '#e6e1e5',
+          variant: '#cac4d0',
+        },
+        'on-primary': {
+          DEFAULT: '#000000',
+        },
+        'on-primary-container': {
+          DEFAULT: '#002106',
+        },
+        // Material 3 Outline Colors
+        outline: {
+          DEFAULT: '#938f99',
+          variant: '#49454f',
         },
         // Material 3 Error Colors
         error: {
@@ -70,6 +89,24 @@ export default {
           900: '#0f172a',
           950: '#020617',
         }
+      },
+      fontSize: {
+        // Material 3 Typography Scale
+        'display-large': ['3.5625rem', { lineHeight: '4rem', letterSpacing: '-0.015625rem' }],
+        'display-medium': ['2.8125rem', { lineHeight: '3.25rem' }],
+        'display-small': ['2.25rem', { lineHeight: '2.75rem' }],
+        'headline-large': ['2rem', { lineHeight: '2.5rem' }],
+        'headline-medium': ['1.75rem', { lineHeight: '2.25rem' }],
+        'headline-small': ['1.5rem', { lineHeight: '2rem' }],
+        'title-large': ['1.375rem', { lineHeight: '1.75rem', fontWeight: '500' }],
+        'title-medium': ['1rem', { lineHeight: '1.5rem', fontWeight: '500', letterSpacing: '0.009375rem' }],
+        'title-small': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '500', letterSpacing: '0.00625rem' }],
+        'label-large': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '500', letterSpacing: '0.00625rem' }],
+        'label-medium': ['0.75rem', { lineHeight: '1rem', fontWeight: '500', letterSpacing: '0.03125rem' }],
+        'label-small': ['0.6875rem', { lineHeight: '1rem', fontWeight: '500', letterSpacing: '0.03125rem' }],
+        'body-large': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0.03125rem' }],
+        'body-medium': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.015625rem' }],
+        'body-small': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.025rem' }],
       },
       boxShadow: {
         // Material 3 Elevation Shadows
