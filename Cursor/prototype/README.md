@@ -4,6 +4,15 @@ Prototipo funcional de una aplicación de financiación inteligente y proactiva 
 
 ## 🚀 Características Principales
 
+### 🎯 Flujo de Onboarding
+- **5 pasos interactivos** con barra de progreso visual
+- **Validaciones en tiempo real** para todos los campos
+- **Estilo Material 3** con tokens de diseño
+- **Formato automático de moneda** (ARS)
+- **Cálculo de ahorro potencial** en tiempo real
+- **Persistencia en localStorage**
+- Accesible en `/onboarding` o automáticamente en primera visita
+
 ### 💬 Interfaz Conversacional
 - Chat inteligente con burbujas de diálogo
 - Soporte de entrada por voz (simulado)
@@ -197,6 +206,30 @@ npm run build
 ```
 
 Los archivos optimizados se generarán en la carpeta `dist/`.
+
+## 🌐 Despliegue en GitHub Pages
+
+La aplicación está configurada para desplegarse automáticamente en GitHub Pages mediante GitHub Actions.
+
+### URL de la aplicación desplegada:
+```
+https://sanrivero-meli.github.io/adelanto-dinero-prototipos/
+```
+
+### URL directa del onboarding:
+```
+https://sanrivero-meli.github.io/adelanto-dinero-prototipos/onboarding
+```
+
+### Configuración automática:
+- El workflow `.github/workflows/deploy.yml` se ejecuta automáticamente en cada push a `main`
+- Se construye la aplicación y se despliega en GitHub Pages
+- No requiere configuración manual adicional
+
+### Habilitar GitHub Pages:
+1. Ve a **Settings** → **Pages** en tu repositorio
+2. En **Source**, selecciona **GitHub Actions**
+3. El despliegue se hará automáticamente en cada push
 
 ## 👥 Créditos
 

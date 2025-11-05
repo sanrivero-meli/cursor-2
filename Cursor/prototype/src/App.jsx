@@ -54,11 +54,11 @@ function App() {
     localStorage.removeItem('onboardingCompleted')
     localStorage.removeItem('userData')
     setOnboardingCompleted(false)
-    window.location.href = '/onboarding'
+    window.location.href = '/adelanto-dinero-prototipos/onboarding'
   }
 
   return (
-    <Router>
+    <Router basename="/adelanto-dinero-prototipos">
       <Routes>
         {/* Onboarding route - always accessible */}
         <Route 
