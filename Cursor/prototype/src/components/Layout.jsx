@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
-import { MessageCircle, Calculator, LayoutDashboard, Target, Sparkles } from 'lucide-react'
+import { MessageCircle, Calculator, LayoutDashboard, Target, Sparkles, RotateCcw } from 'lucide-react'
 
-const Layout = ({ user }) => {
+const Layout = ({ user, onResetOnboarding }) => {
   const [isVoiceActive, setIsVoiceActive] = useState(false)
 
   const navItems = [
@@ -29,6 +29,14 @@ const Layout = ({ user }) => {
             </div>
             
             <div className="flex items-center gap-4">
+              <button
+                onClick={onResetOnboarding}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-surface-variant text-surface-300 hover:bg-surface-container-high hover:text-white transition-all text-sm"
+                title="Resetear onboarding"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span className="hidden sm:inline">Reset Onboarding</span>
+              </button>
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-medium">{user.name}</p>
                 <p className="text-xs text-primary-400">Nivel {user.level}</p>
